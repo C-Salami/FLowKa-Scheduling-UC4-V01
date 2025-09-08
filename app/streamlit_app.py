@@ -2,6 +2,57 @@ from __future__ import annotations
 import streamlit as st
 import pandas as pd
 from pathlib import Path
+
+# --- Bootstrap: ensure we can import our own package in any environment ---
+import sys, importlib.util
+from pathlib import Path as _P
+_ROOT = _P(__file__).resolve().parents[1]  # repo root (folder that contains "app")
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
+# Try normal package import; if it fails, fall back to direct file import
+try:
+    from app.logic.data_io import load_all  # noqa
+except ModuleNotFoundError:
+    _data_io_path = _ROOT / "app" / "logic" / "data_io.py"
+    spec = importlib.util.spec_from_file_location("data_io", _data_io_path)
+    _mod = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(_mod)  # type: ignore
+    load_all = _mod.load_all  # type: ignore
+    # also patch the other modules similarly below
+    _sim_path = _ROOT / "app" / "logic" / "simulator.py"
+    _spec2 = importlib.util.spec_from_file_location("simulator", _sim_path)
+    _mod2 = importlib.util.module_from_spec(_spec2)
+    assert _spec2.loader is not None
+    _spec2.loader.exec_module(_mod2)  # type: ignore
+    weekly_capacity = _mod2.weekly_capacity
+    weekly_inventory_start = _mod2.weekly_inventory_start
+    baseline_forecast = _mod2.baseline_forecast
+    apply_scenario = _mod2.apply_scenario
+    capacity_material_adjustment = _mod2.capacity_material_adjustment
+    fuel_cost_adjustment = _mod2.fuel_cost_adjustment
+    plan_balance = _mod2.plan_balance
+    summarize_kpis = _mod2.summarize_kpis
+
+    _ui_path = _ROOT / "app" / "ui" / "components.py"
+    _spec3 = importlib.util.spec_from_file_location("components", _ui_path)
+    _mod3 = importlib.util.module_from_spec(_spec3)
+    assert _spec3.loader is not None
+    _spec3.loader.exec_module(_mod3)  # type: ignore
+    line_forecast_vs_supply = _mod3.line_forecast_vs_supply
+    bar_gap = _mod3.bar_gap
+else:
+    # If normal import succeeded, import the rest normally
+    from app.logic.simulator import (
+        weekly_capacity, weekly_inventory_start, baseline_forecast,
+        apply_scenario, capacity_material_adjustment, fuel_cost_adjustment,
+        plan_balance, summarize_kpis, cost_table
+    )
+    from app.ui.components import line_forecast_vs_supply, bar_gap
+# --- End bootstrap ---
+
+# (imports continue below)
 from app.logic.data_io import load_all
 from app.logic.simulator import (
     weekly_capacity, weekly_inventory_start, baseline_forecast,
@@ -11,6 +62,16 @@ from app.logic.simulator import (
 from app.ui.components import line_forecast_vs_supply, bar_gap
 
 st.set_page_config(page_title="CPG S&OP Demo", page_icon="📦", layout="wide")
+
+# Health check: show where we're importing from and verify required CSVs
+import streamlit as st
+from app.logic.data_io import REQUIRED_FILES
+st.sidebar.caption("Health")
+st.sidebar.code(f"sys.path[0]: {sys.path[0]}\nroot: {_ROOT}")
+missing = [f for f in REQUIRED_FILES if not (_ROOT / "data" / f).exists()]
+if missing:
+    st.sidebar.error("Missing CSVs in ./data: " + ", ".join(missing))
+
 
 # Sidebar: data folder & use case
 st.sidebar.header("⚙️ Setup")
