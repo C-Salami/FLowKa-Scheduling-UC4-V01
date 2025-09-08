@@ -1,0 +1,11 @@
+customer_id,customer_name,channel,region
+C001,Coles,Grocery,ANZ-East
+C002,Woolworths,Grocery,ANZ-East
+C003,IGA,Grocery,ANZ-South
+C004,7-Eleven,Convenience,ANZ-North
+C005,BP Connect,Convenience,ANZ-West
+C006,Caltex Star Mart,Convenience,ANZ-West
+C007,Amazon AU,Ecommerce,ANZ-East
+C008,Catch,Ecommerce,ANZ-South
+C009,Costco AU,Grocery,ANZ-North
+C010,ALDI AU,Grocery,ANZ-South

@@ -1,0 +1,4 @@
+scenario_name,assumption,value,start_date,end_date
+High_Demand_Summer,Demand uplift factor for beverages in Dec-Feb,1.25,2024-12-01,2025-02-28
+Supplier_Delay,Add days to lead times for Metals (MAT004),7.0,2025-03-01,2025-04-15
+Fuel_Cost_Spike,Increase logistics cost per unit,0.1,2025-05-01,2025-06-30

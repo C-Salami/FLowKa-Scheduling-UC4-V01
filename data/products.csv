@@ -1,0 +1,7 @@
+sku_id,sku_name,category,brand,unit_size,uom,shelf_life_days
+SKU100,Fizz Cola 330ml,Beverage,FizzCo,330,ml,365
+SKU110,Fizz Cola Zero 330ml,Beverage,FizzCo,330,ml,365
+SKU200,Choco Bite 50g,Snacks,Snacksy,50,g,270
+SKU210,Choco Bite Dark 50g,Snacks,Snacksy,50,g,270
+SKU300,Yogurt Strawberry 150g,Dairy,Milko,150,g,45
+SKU310,Yogurt Mango 150g,Dairy,Milko,150,g,45

@@ -1,0 +1,7 @@
+supplier_id,supplier_name,material_id,material_name,uom,lead_time_days,on_time_pct,min_order_qty
+SUP1,Austral Sugar Co.,MAT001,Sugar,kg,7,0.86,1000
+SUP2,ChocoWorld Pty,MAT002,Cocoa,kg,14,0.95,1000
+SUP3,DairyBase Ltd.,MAT003,Milk Powder,kg,7,0.93,10000
+SUP4,Oceania Metals,MAT004,Aluminium Can,ea,7,0.86,10000
+SUP5,PolyPack ANZ,MAT005,PET Bottle,ea,14,0.92,1000
+SUP6,FiberBox,MAT006,Cardboard Carton,ea,21,0.91,1000
