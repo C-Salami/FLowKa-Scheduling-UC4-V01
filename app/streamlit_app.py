@@ -100,9 +100,14 @@ if len(weeks)==0:
     st.stop()
 wk_min = weeks[0]
 wk_max = weeks[-1]
-week_range = st.sidebar.slider("Week range", min_value=pd.to_datetime(wk_min), max_value=pd.to_datetime(wk_max),
-                               value=(pd.to_datetime(wk_min), pd.to_datetime(wk_min)+pd.Timedelta(weeks=8)), format="YYYY-MM-DD")
-week_starts = [w for w in weeks if week_range[0] <= pd.to_datetime(w) <= week_range[1]]
+min_dt = pd.to_datetime(wk_min).to_pydatetime()
+max_dt = pd.to_datetime(wk_max).to_pydatetime()
+default_end = (pd.to_datetime(wk_min) + pd.Timedelta(weeks=8)).to_pydatetime()
+week_range = st.sidebar.slider("Week range", min_value=min_dt, max_value=max_dt,
+                               value=(min_dt, default_end), format="YYYY-MM-DD")
+start_ts = pd.Timestamp(week_range[0])
+end_ts = pd.Timestamp(week_range[1])
+week_starts = [w for w in weeks if start_ts <= pd.to_datetime(w) <= end_ts]
 
 # Scenario knobs (shown only in Scenario Planning)
 scenario = {}
